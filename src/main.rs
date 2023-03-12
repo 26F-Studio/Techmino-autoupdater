@@ -1,7 +1,6 @@
 use std::fs;
 use std::io::{self, Write};
 use std::path::Path;
-use std::process::Command;
 
 mod multiplatform;
 
@@ -16,15 +15,14 @@ fn main() -> std::io::Result<()> {
     let dest = dest_buf.parent().unwrap();
 
     println!("Installing update...");
-
-    update(src, dest);
+    update(src, dest).expect("Update failed.");
 
     loop {
-        print!("\nStart Techmino? [Y/N]: ");
+        print!("Start Techmino? [Y/N]: ");
         
         io::stdout().flush().unwrap(); // Make sure prompt is displayed immediately
         let mut input = String::new();
-        io::stdin().read_line(&mut input).unwrap();
+        io::stdin().read_line(&mut input).unwrap(); // get input from user
 
         match input.trim().to_lowercase().as_str() {
             "y" | "yes" => {
@@ -48,7 +46,7 @@ fn update(src: &Path, dest: &Path) -> io::Result<()> {
     }
     match std::fs::remove_dir_all(src) {
         Err(e) => {println!("Error while cleaning up: {}", e); return Err(e)},
-        Ok(_) => {println!("Cleanup complete.\nUpdate completed successfully.")}
+        Ok(_) => {println!("Cleanup complete.\nUpdate completed successfully.\n")}
     }
     Ok(())
 }

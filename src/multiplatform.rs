@@ -8,7 +8,7 @@ const SRC_LNX: &str = "~/.local/share/love/Techmino/updateExtract";
 pub fn get_src() -> PathBuf {
     match OS {
         "windows" => { 
-            let appdata = std::env::var_os("APPDATA").expect("APPDATA environment variable not set");
+            let appdata = std::env::var_os("APPDATA").expect("APPDATA env var not set");
             return Path::new(&appdata).join("Techmino").join("updateExtract");
         }
         "macos"   => { return Path::new(SRC_MAC).to_path_buf(); }
