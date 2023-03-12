@@ -1,43 +1,57 @@
-use std::{fs, io};
+use std::fs;
+use std::io::{self, Write};
 use std::path::Path;
+use std::process::Command;
+
+mod multiplatform;
 
 // const SRC_WIN: &str = r"%appdata%\Techmino\updateExtract\";
-const SRC_MAC: &str = "/Users/user/Library/Application Support/LOVE/Techmino/updateExtract/";
-const SRC_LNX: &str = "~/.local/share/love/Techmino/updateExtract";
+
 
 fn main() -> std::io::Result<()> {
-    let src;
-    let src_buf; // unused by linux/mac. i trust the compiler that it'll optimize this away :)
-    match std::env::consts::OS {
-        "windows" => { 
-            let appdata = std::env::var_os("APPDATA").expect("APPDATA environment variable not set");
-            src_buf = Path::new(&appdata).join("Techmino").join("updateExtract");
-            src = src_buf.as_path();
+    let src_buf = multiplatform::get_src();
+    let src: &Path = src_buf.as_path();
+
+    let dest_buf = std::env::current_exe().unwrap();
+    let dest = dest_buf.parent().unwrap();
+
+    println!("Installing update...");
+
+    update(src, dest);
+
+    loop {
+        print!("\nStart Techmino? [Y/N]: ");
+        
+        io::stdout().flush().unwrap(); // Make sure prompt is displayed immediately
+        let mut input = String::new();
+        io::stdin().read_line(&mut input).unwrap();
+
+        match input.trim().to_lowercase().as_str() {
+            "y" | "yes" => {
+                multiplatform::start_techmino();
+                break;
+            },
+            "n" | "no" => {
+                break;
+            },
+            _ => { continue; } // continue prompting the user for a valid input
         }
-        "macos"   => { src = Path::new(SRC_MAC); }
-        "linux"   => { src = Path::new(SRC_LNX); }
-        _ => panic!("Unsupported operating system: {}", std::env::consts::OS)
-    }
-
-    // we need this variable to exist separately for some reason. i won't be accessing it tho
-    let __ = std::env::current_exe().unwrap();
-    let dest = __.parent().unwrap();
-
-    println!("Copying files from {} to {}... ", src.display(), dest.display());
-
-    match copy_dir(&src, &dest) {
-        Err(e) => {println!("Error while copying: {}", e); return Err(e)},
-        Ok(_) => {println!("Copying complete.\n============\nCleaning up temporary update files...")}
-    }
-    
-    match std::fs::remove_dir_all(src) {
-        Err(e) => {println!("Error while cleaning up: {}", e); return Err(e)},
-        Ok(_) => {println!("Cleanup complete.")}
     }
 
     Ok(())
 }
 
+fn update(src: &Path, dest: &Path) -> io::Result<()> {
+    match copy_dir(&src, &dest) {
+        Err(e) => {println!("Error while copying: {}", e); return Err(e)},
+        Ok(_) => {println!("Installation complete.\nCleaning up temporary update files...")}
+    }
+    match std::fs::remove_dir_all(src) {
+        Err(e) => {println!("Error while cleaning up: {}", e); return Err(e)},
+        Ok(_) => {println!("Cleanup complete.\nUpdate completed successfully.")}
+    }
+    Ok(())
+}
 
 fn copy_dir(from_dir: &Path, to_dir: &Path) -> io::Result<()> {
     for entry in fs::read_dir(from_dir)? {
