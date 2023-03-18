@@ -46,3 +46,25 @@ jobs:
         path: target/x86_64-pc-windows-msvc/release/techmino-autoupdater.exe
         if-no-files-found: warn
         retention-days: 90
+
+  build-macos:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install Xcode
+        run: xcode-select --install
+      - name: Set up Rust
+        uses: actions-rs/toolchain@v1.4.2
+        with:
+          toolchain: stable
+          override: true
+      - name: Build macOS
+        run: cargo build --release --verbose --target=x86_64-apple-darwin
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: macOS
+          path: target/x86_64-apple-darwin/release/techmino-autoupdater
+          if-no-files-found: warn
+          retention-days: 90
