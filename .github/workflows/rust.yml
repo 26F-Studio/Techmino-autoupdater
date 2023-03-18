@@ -14,11 +14,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Build for Linux
+    - uses: actions/checkout@v2.4.4
+    - name: Build Linux
       run: cargo build --release --verbose
     - name: Upload Linux artifacts
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v2.4.4
       with:
         name: Linux
         path: /home/runner/work/Techmino-autoupdater/Techmino-autoupdater/target/release/techmino-autoupdater
@@ -29,18 +29,20 @@ jobs:
     runs-on: windows-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v2.4.4
     - name: Install Rust
-      uses: actions-rs/toolchain@v1
+      uses: actions-rs/toolchain@v1.4.2
       with:
         toolchain: stable-x86_64-pc-windows-msvc
         override: true
-    - name: Build for Windows
+    - name: Build Windows
+      env:
+        CARGO_TARGET_DIR: ./target
       run: cargo build --release --target x86_64-pc-windows-msvc --verbose
     - name: Upload Windows artifacts
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v2.4.4
       with:
         name: Windows
-        path: /home/runner/work/Techmino-autoupdater/Techmino-autoupdater/target/x86_64-pc-windows-msvc/release/techmino-autoupdater.exe
+        path: ${{ env.CARGO_TARGET_DIR }}/x86_64-pc-windows-msvc/release/techmino-autoupdater.exe
         if-no-files-found: warn
         retention-days: 90
