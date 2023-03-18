@@ -18,7 +18,7 @@ jobs:
     - name: Build Linux
       run: cargo build --release --verbose
     - name: Upload Linux artifacts
-      uses: actions/upload-artifact@v2.4.4
+      uses: actions/upload-artifact@v2
       with:
         name: Linux
         path: /home/runner/work/Techmino-autoupdater/Techmino-autoupdater/target/release/techmino-autoupdater
