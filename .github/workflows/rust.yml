@@ -43,6 +43,6 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: Windows
-        path: ${{ env.CARGO_TARGET_DIR }}/x86_64-pc-windows-msvc/release/techmino-autoupdater.exe
+        path: target/x86_64-pc-windows-msvc/release/techmino-autoupdater.exe
         if-no-files-found: warn
         retention-days: 90
