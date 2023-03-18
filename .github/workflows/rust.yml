@@ -55,7 +55,7 @@ jobs:
       - name: Install Xcode
         run: xcode-select --install
       - name: Set up Rust
-        uses: actions-rs/toolchain@v1.4.2
+        uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
           override: true
