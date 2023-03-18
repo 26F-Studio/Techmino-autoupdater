@@ -1,3 +1,5 @@
+// !! INCREASE THE NUMBER WHEN CREATING NEW ENTIRES! !! //
+// -----------------------------V---------------------- //
 pub static LANG: [(&str, &str); 10] = [
     ("appdata_not_found",       "APPDATA environment variable not set!"),
     ("unsupported_os",          "This program only supports Windows, macOS, and Linux."),
