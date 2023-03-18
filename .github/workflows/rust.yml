@@ -52,8 +52,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Install Xcode
-        run: xcode-select --install
       - name: Set up Rust
         uses: actions-rs/toolchain@v1
         with:
