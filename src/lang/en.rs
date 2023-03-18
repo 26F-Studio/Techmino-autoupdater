@@ -1,4 +1,4 @@
-// !! INCREASE THE NUMBER WHEN CREATING NEW ENTIRES! !! //
+// !! INCREASE THE NUMBER WHEN CREATING NEW ENTRIES! !! //
 // -----------------------------V---------------------- //
 pub static LANG: [(&str, &str); 10] = [
     ("appdata_not_found",       "APPDATA environment variable not set!"),

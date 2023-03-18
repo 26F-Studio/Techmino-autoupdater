@@ -41,7 +41,6 @@ pub fn get_lang() -> String {
         }
         None => "en".to_owned(),
     };
-    if lang == String::from("zh_code") { return String::from("zh") }
     return lang;
 }
 

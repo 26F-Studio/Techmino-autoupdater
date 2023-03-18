@@ -1,16 +1,16 @@
-// !! INCREASE THE NUMBER WHEN CREATING NEW ENTIRES! !! //
+// !! INCREASE THE NUMBER WHEN CREATING NEW ENTRIES! !! //
 // -----------------------------V---------------------- //
 pub static LANG: [(&str, &str); 10] = [
-    ("appdata_not_found",       "APPDATA environment variable not set!"),
-    ("unsupported_os",          "This program only supports Windows, macOS, and Linux."),
+    ("appdata_not_found",       "未设置APPDATA环境变量！"),
+    ("unsupported_os",          "该程序仅支持Windows、macOS和Linux。"),
 
-    ("update_start",            "Installing update..."),
-    ("copy_success",            "Installation complete.\nCleaning up temporary update files..."),
-    ("cleanup_success",         "Cleanup complete.\nUpdate completed successfully."),
-    ("launch_prompt",           "Start Techmino? [Y/N]: "),
+    ("update_start",            "正在安装更新..."),
+    ("copy_success",            "安装完成。\n正在清理临时更新文件..."),
+    ("cleanup_success",         "清理完成。\n更新已成功完成。"),
+    ("launch_prompt",           "启动Techmino？ [Y/N]: "),
     
-    ("update_fail",             "Update failed."),
-    ("copy_fail",               "Error while copying: "),
-    ("cleanup_fail",            "Error while cleaning up: "),
-    ("launch_fail",             "Failed to launch Techmino."),
+    ("update_fail",             "更新失败。"),
+    ("copy_fail",               "复制时出错："),
+    ("cleanup_fail",            "清理时出错："),
+    ("launch_fail",             "无法启动Techmino。"),
 ];
