@@ -3,22 +3,24 @@ use std::io::{self, Write};
 use std::path::Path;
 
 mod multiplatform;
+mod lang;
 
 // const SRC_WIN: &str = r"%appdata%\Techmino\updateExtract\";
 
 
 fn main() -> std::io::Result<()> {
+    lang::init();
     let src_buf = multiplatform::get_src();
     let src: &Path = src_buf.as_path();
 
     let dest_buf = std::env::current_exe().unwrap();
     let dest = dest_buf.parent().unwrap();
 
-    println!("Installing update...");
-    update(src, dest).expect("Update failed.");
+    println!("{}", lang::get_entry("update_start"));
+    update(src, dest).expect(lang::get_entry("update_fail"));
 
     loop {
-        print!("Start Techmino? [Y/N]: ");
+        print!("{}", lang::get_entry("launch_prompt"));
         
         io::stdout().flush().unwrap(); // Make sure prompt is displayed immediately
         let mut input = String::new();
@@ -41,12 +43,12 @@ fn main() -> std::io::Result<()> {
 
 fn update(src: &Path, dest: &Path) -> io::Result<()> {
     match copy_dir(&src, &dest) {
-        Err(e) => {println!("Error while copying: {}", e); return Err(e)},
-        Ok(_) => {println!("Installation complete.\nCleaning up temporary update files...")}
+        Err(e) => {println!("{}{}", lang::get_entry("copy_fail"), e); return Err(e)},
+        Ok(_) => {println!("{}", lang::get_entry("copy_success"))}
     }
     match std::fs::remove_dir_all(src) {
-        Err(e) => {println!("Error while cleaning up: {}", e); return Err(e)},
-        Ok(_) => {println!("Cleanup complete.\nUpdate completed successfully.\n")}
+        Err(e) => {println!("{}{}", lang::get_entry("cleanup_fail"), e); return Err(e)},
+        Ok(_) => {println!("{}", lang::get_entry("cleanup_success"))}
     }
     Ok(())
 }
